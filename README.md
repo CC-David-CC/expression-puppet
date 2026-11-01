@@ -33,8 +33,8 @@ The bundled Rive WASM notice is retained in `LICENSE.rive.txt`.
 ## Verification
 
 ```sh
-npm run typecheck --prefix apps/system/expression-puppet
-npm test --prefix apps/system/expression-puppet
+npm run typecheck --prefix apps/games/04-rive-interactives/expression-puppet
+npm test --prefix apps/games/04-rive-interactives/expression-puppet
 node tests/expression-puppet-browser.test.mjs
 CODI_PHONE=1 node tests/expression-puppet-browser.test.mjs
 node tests/expression-puppet-account.test.mjs
