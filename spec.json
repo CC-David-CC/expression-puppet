@@ -1,0 +1,123 @@
+{
+  "category": "04-rive-interactives",
+  "id": "expression-puppet",
+  "title": "Expression Puppet",
+  "genre": "Interactive character and pose toy",
+  "pitch": "Direct an expressive character with a few meaningful controls and complete short pose-matching challenges.",
+  "capabilities": [
+    "Rigged character blending",
+    "Pointer-driven look and facial control",
+    "Data binding and authored constraints"
+  ],
+  "rules": [
+    "Free-play lets user control look, mood and pose within authored ranges.",
+    "Challenge mode shows a target expression and scores the logical parameter match, not computer vision.",
+    "No webcam, face recognition or MediaPipe dependency in the initial release."
+  ],
+  "content": "One original rig, eight expression challenges, six saved pose slots in the project file.",
+  "state": [
+    "look/mood/pose values",
+    "challenge id and score",
+    "saved pose slots",
+    "settings"
+  ],
+  "actions": [
+    {
+      "command": "look",
+      "desktop": "Pointer drag in look pad",
+      "phone": "Drag look pad",
+      "xr": "Not applicable; plays as a flat browser app."
+    },
+    {
+      "command": "pose",
+      "desktop": "Sliders and keyboard increments",
+      "phone": "Large sliders",
+      "xr": "Not applicable; plays as a flat browser app."
+    },
+    {
+      "command": "match",
+      "desktop": "Match button",
+      "phone": "Match button",
+      "xr": "Not applicable; plays as a flat browser app."
+    },
+    {
+      "command": "save-pose",
+      "desktop": "Save pose to named local slot",
+      "phone": "Save pose button",
+      "xr": "Not applicable; plays as a flat browser app."
+    }
+  ],
+  "rive": {
+    "asset": "expression-puppet.riv",
+    "role": "Main rig with authored pose blends; contains all visible character artwork.",
+    "properties": {
+      "lookX": "number -1..1",
+      "lookY": "number -1..1",
+      "smile": "number 0..1",
+      "eyebrow": "number -1..1",
+      "pose": "integer 0..5"
+    },
+    "events": [
+      "blink",
+      "celebrate"
+    ],
+    "states": [
+      "idle",
+      "pose",
+      "match",
+      "cheer"
+    ],
+    "artboard": "Main",
+    "stateMachine": "Presentation",
+    "assetStatus": "to_author"
+  },
+  "polish": [
+    "Eye/gaze changes bounded and comfortable",
+    "Readable target silhouette",
+    "Accessible numeric controls, not only gestures"
+  ],
+  "tests": [
+    "All control values clamp to documented ranges.",
+    "Pose score uses app values, not arbitrary Rive event payload.",
+    "Saved slots restore all parameters.",
+    "Controls work without camera permission.",
+    "Low frame rate changes no score.",
+    "Resize changes no logical pose."
+  ],
+  "loop": [
+    "normalize pose command",
+    "commit canonical rig parameters",
+    "evaluate target tolerance on Match",
+    "project parameters into Rive view model",
+    "draw only when active or changed"
+  ],
+  "save": "Canonical pose values and named slots; no embedded image or executable content.",
+  "wave": 2,
+  "specVersion": 1,
+  "status": "planned",
+  "implementation": "not_started",
+  "runtimeTests": "not_run",
+  "engine": "Rive web runtime + application state",
+  "singlePlayer": true,
+  "phoneRequired": true,
+  "mountContract": {
+    "export": "mount",
+    "synchronous": true,
+    "returns": [
+      "element",
+      "dispose"
+    ],
+    "productionEntry": "index.mjs",
+    "suppliedEntry": "index.pseudo.mjs"
+  },
+  "xrRequired": false,
+  "riveRequired": true,
+  "riveAssetIncluded": false,
+  "documentKind": "Canonical pose values and named slots; no embedded image or executable content.",
+  "sources": [
+    "S14",
+    "S15",
+    "S16",
+    "S17"
+  ]
+}
