@@ -30,6 +30,16 @@ snapshot after confirmation and after the file read. The app pauses when its
 window loses focus, is hidden or rolled up, or the browser loses visibility.
 The bundled Rive WASM notice is retained in `LICENSE.rive.txt`.
 
+Changing a challenge updates its target values immediately, including while
+paused. The displayed score is the last match; press **Match pose** to score
+the current expression. Saving or opening pauses the activity and updates the
+Resume button. Saving preserves a destination typed while the write was in
+progress and refuses to recreate a previously saved file that was deleted.
+Local registered-account desktop and phone-sized tests matched a challenge,
+saved and reloaded a pose slot, synced and reopened in a fresh browser, and
+exercised the changed-destination and deleted-file guards. Physical touch and
+authored Rive art remain unverified.
+
 ## Verification
 
 ```sh

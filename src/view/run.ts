@@ -256,23 +256,27 @@ export async function startView(host: Host, signal: AbortSignal): Promise<{eleme
     }
   }
 
-  function togglePause() {
-    paused = !paused;
+  function setPaused(value: boolean) {
+    paused = value;
     pause.textContent = paused ? 'Resume' : 'Pause';
     pause.setAttribute('aria-label', pause.textContent);
     if (paused) {
       audio.setMuted(true);
-      announce('Pose paused. Your values are retained.');
     } else {
+      audio.setMuted(!sound.checked);
       if (sound.checked) audio.unlock();
-      announce('Pose active.');
     }
+  }
+
+  function togglePause() {
+    setPaused(!paused);
+    announce(paused ? 'Pose paused. Your values are retained.' : 'Pose active.');
   }
 
   function scorePose() {
     const value = session.match();
     mark();
-    score.textContent = `Match score: ${value}/100`;
+    score.textContent = `Last match score: ${value}/100. Press Match pose to update.`;
     if (value >= 85) {
       if (sound.checked) audio.tone(660, 120, 'triangle');
       announce('Excellent match. Choose another challenge or keep refining.');
@@ -359,7 +363,7 @@ export async function startView(host: Host, signal: AbortSignal): Promise<{eleme
     if (busy || !valid()) return;
     busy = true;
     const guard = pendingSave();
-    paused = true;
+    setPaused(true);
     const capturedRevision = revision;
     const text = encodeSave(session);
     const requested = path.value;
@@ -382,13 +386,14 @@ export async function startView(host: Host, signal: AbortSignal): Promise<{eleme
         expected = existing.version;
       } catch (error) {
         if (!(error instanceof Error) || error.message !== 'File not found.') throw error;
+        if (filePath === savedPath && savedVersion) throw Error('The saved puppet project was removed. Save a copy or reopen it.');
       }
       if (!valid() || !context.valid()) return;
       const result = await context.files.write(filePath, new TextEncoder().encode(text), expected);
       if (!valid() || !context.valid()) return;
       savedPath = filePath;
       savedVersion = result.version;
-      path.value = filePath;
+      if (path.value === requested) path.value = filePath;
       const newer = revision !== capturedRevision || encodeSave(session) !== text;
       setDirty(newer);
       guard.committed();
@@ -413,7 +418,7 @@ export async function startView(host: Host, signal: AbortSignal): Promise<{eleme
   async function open(selected?: string) {
     if (busy || !valid()) return;
     busy = true;
-    paused = true;
+    setPaused(true);
     const before = revision, snapshot = encodeSave(session);
     try {
       if (dirty && !await host.ui.confirm('Open a saved puppet and discard current pose changes?', {
@@ -436,7 +441,7 @@ export async function startView(host: Host, signal: AbortSignal): Promise<{eleme
       if (!valid() || !context.valid()) return;
       if (revision !== before || encodeSave(session) !== snapshot) throw Error('The puppet changed while opening; try again.');
       session = restored;
-      paused = true;
+      setPaused(true);
       savedPath = filePath;
       savedVersion = file.version;
       path.value = filePath;
@@ -507,7 +512,7 @@ export async function startView(host: Host, signal: AbortSignal): Promise<{eleme
   challengeSelect.addEventListener('change', () => {
     session.challengeId = Number(challengeSelect.value);
     mark();
-    drawTarget();
+    draw();
     announce(`Challenge ${session.challengeId + 1} selected. Match its expression.`);
   });
   sound.addEventListener('change', () => {
@@ -588,7 +593,7 @@ export async function startView(host: Host, signal: AbortSignal): Promise<{eleme
     lastPaint = key;
     drawFace(context, session.values, canvas.width, canvas.height, blink);
     targetText.textContent = `Target ${session.challengeId + 1}: Look ${session.challenge.target.lookX.toFixed(1)}, ${session.challenge.target.lookY.toFixed(1)} · Smile ${session.challenge.target.smile.toFixed(1)} · Brow ${session.challenge.target.eyebrow.toFixed(1)} · Pose ${session.challenge.target.pose}`;
-    score.textContent = `Match score: ${session.score}/100`;
+    score.textContent = `Last match score: ${session.score}/100. Press Match pose to update.`;
     drawTarget();
   }
 
