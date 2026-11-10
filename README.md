@@ -49,3 +49,7 @@ node tests/expression-puppet-browser.test.mjs
 CODI_PHONE=1 node tests/expression-puppet-browser.test.mjs
 node tests/expression-puppet-account.test.mjs
 ```
+
+## Design requirements
+
+The original [design brief, controls, save rules, artwork and acceptance plans](design/README.md) are retained as reference. They describe targets; the implementation and qualification status above takes precedence.
