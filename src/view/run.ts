@@ -581,17 +581,39 @@ export async function startView(host: Host, signal: AbortSignal): Promise<{eleme
   function drawTarget() {
     const context = targetCanvas.getContext('2d');
     if (!context) return;
-    drawFace(context, session.challenge.target, targetCanvas.width, targetCanvas.height);
+    const dpr = Math.min(window.devicePixelRatio || 1, 4);
+    const rect = targetCanvas.getBoundingClientRect();
+    const cssW = Math.max(160, Math.floor(rect.width || targetCanvas.clientWidth || 240));
+    const cssH = Math.max(120, Math.floor(rect.height || targetCanvas.clientHeight || 180));
+    const targetW = Math.round(cssW * dpr);
+    const targetH = Math.round(cssH * dpr);
+    if (targetCanvas.width !== targetW || targetCanvas.height !== targetH) {
+      targetCanvas.width = targetW;
+      targetCanvas.height = targetH;
+    }
+    context.setTransform(dpr, 0, 0, dpr, 0, 0);
+    drawFace(context, session.challenge.target, cssW, cssH);
   }
 
   function draw() {
     const context = canvas.getContext('2d');
     if (!context) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 4);
+    const rect = canvas.getBoundingClientRect();
+    const cssW = Math.max(280, Math.floor(rect.width || canvas.clientWidth || 560));
+    const cssH = Math.max(210, Math.floor(rect.height || canvas.clientHeight || 420));
+    const targetW = Math.round(cssW * dpr);
+    const targetH = Math.round(cssH * dpr);
+    if (canvas.width !== targetW || canvas.height !== targetH) {
+      canvas.width = targetW;
+      canvas.height = targetH;
+    }
+    context.setTransform(dpr, 0, 0, dpr, 0, 0);
     const blink = !reducedMotion && Math.floor(performance.now() / 3200) % 5 === 4;
-    const key = JSON.stringify([session.values, blink, session.challengeId, session.score]);
+    const key = JSON.stringify([session.values, blink, session.challengeId, session.score, targetW, targetH]);
     if (key === lastPaint) return;
     lastPaint = key;
-    drawFace(context, session.values, canvas.width, canvas.height, blink);
+    drawFace(context, session.values, cssW, cssH, blink);
     targetText.textContent = `Target ${session.challengeId + 1}: Look ${session.challenge.target.lookX.toFixed(1)}, ${session.challenge.target.lookY.toFixed(1)} · Smile ${session.challenge.target.smile.toFixed(1)} · Brow ${session.challenge.target.eyebrow.toFixed(1)} · Pose ${session.challenge.target.pose}`;
     score.textContent = `Last match score: ${session.score}/100. Press Match pose to update.`;
     drawTarget();
@@ -613,6 +635,13 @@ export async function startView(host: Host, signal: AbortSignal): Promise<{eleme
   pause.textContent = 'Resume';
   pause.setAttribute('aria-label', 'Resume');
   announce('Press Resume to activate the puppet. Use the sliders, drag the face, and match the target expression.');
+  const resizeObserver = new ResizeObserver(() => {
+    if (!disposed) {
+      lastPaint = '';
+      draw();
+    }
+  });
+  resizeObserver.observe(canvas);
   frame = requestAnimationFrame(loop);
 
   const initial = host.w?.launchContext;
@@ -634,6 +663,7 @@ export async function startView(host: Host, signal: AbortSignal): Promise<{eleme
       disposed = true;
       cancelAnimationFrame(frame);
       clearWatch();
+      resizeObserver.disconnect();
       canvas.removeEventListener('pointerdown', pointerDown);
       canvas.removeEventListener('pointermove', pointerMove);
       canvas.removeEventListener('pointerup', pointerRelease);

@@ -1,12 +1,12 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "./test-shim.ts";
 import {
   CHALLENGES,
   PuppetSession,
   decodeSave,
   encodeSave,
   sessionFromSave,
-} from "../src/model/puppet.js";
-import {RIVE_CONTRACT, validateRiveViewModel} from "../src/rive/contract.js";
+} from "../src/model/puppet.ts";
+import {RIVE_CONTRACT, validateRiveViewModel} from "../src/rive/contract.ts";
 
 describe("PuppetSession rules", () => {
   it("all control values clamp to documented ranges", () => {

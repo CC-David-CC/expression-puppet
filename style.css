@@ -1,1 +1,57 @@
-.puppet-shell{display:grid;grid-template-columns:minmax(260px,1.15fr) minmax(260px,.85fr);gap:10px;padding:10px;background:#f1edf7;color:#241f2e;overflow:auto}.puppet-header,.puppet-toolbar,.puppet-controls,.puppet-save-fields,.puppet-slots{display:flex;flex-wrap:wrap;gap:7px;align-items:center}.puppet-header{grid-column:1/-1;justify-content:space-between}.puppet-heading{margin:0;font-size:20px}.puppet-subtitle{margin:0;color:#5e5669}.puppet-stage{position:relative;min-height:320px;border:1px solid #8d819d;background:#fff;display:flex;align-items:center;justify-content:center}.puppet-face{width:100%;height:100%;max-height:520px;touch-action:none}.puppet-side{display:flex;flex-direction:column;gap:9px}.puppet-rive-pending,.puppet-warning{padding:8px;border:1px solid #9b7b35;background:#fff4d5;color:#5f4818}.puppet-warning[hidden],.puppet-slot[hidden]{display:none}.puppet-target{display:grid;gap:6px}.puppet-target canvas{display:block;width:100%;max-width:280px;height:auto;border:1px solid #8d819d}.puppet-target-text{font-size:13px;line-height:1.35}.puppet-control{display:grid;grid-template-columns:80px minmax(110px,1fr) 42px;gap:8px;align-items:center}.puppet-control input{width:100%}.puppet-control output{text-align:right;font-variant-numeric:tabular-nums}.puppet-toolbar button,.puppet-controls button,.puppet-slots button,.puppet-save-fields button{min-height:40px}.puppet-slot{display:flex;align-items:center;gap:5px}.puppet-settings label{display:flex;gap:7px;align-items:center;margin:4px 0}.puppet-status{grid-column:1/-1;font-size:13px}.puppet-save{grid-column:1/-1}.puppet-save-fields input{min-width:220px;flex:1}.puppet-help p{max-width:75ch}.puppet-settings:not([open])>:not(summary),.puppet-help:not([open])>:not(summary),.puppet-save:not([open])>.puppet-save-fields{display:none}@media(max-width:700px){.puppet-shell{grid-template-columns:1fr;padding:6px}.puppet-stage{min-height:280px}.puppet-toolbar button,.puppet-controls button,.puppet-slots button,.puppet-save-fields button{min-height:44px}.puppet-control{grid-template-columns:68px minmax(100px,1fr) 36px}}
+.puppet-shell{display:grid;grid-template-columns:minmax(280px,1.2fr) minmax(260px,.8fr);gap:12px;padding:12px;background:#f1edf7;color:#241f2e;overflow:auto;box-sizing:border-box}
+.puppet-header,.puppet-toolbar,.puppet-controls,.puppet-save-fields,.puppet-slots{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.puppet-header{grid-column:1/-1;justify-content:space-between}
+.puppet-heading{margin:0;font-size:22px}
+.puppet-subtitle{margin:2px 0 0;color:#5e5669;font-size:14px}
+.puppet-stage{position:relative;min-height:340px;border:1px solid #8d819d;background:#fff;display:flex;align-items:center;justify-content:center;border-radius:8px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.15)}
+.puppet-face{width:100%;height:100%;touch-action:none;display:block}
+.puppet-side{display:flex;flex-direction:column;gap:10px}
+.puppet-rive-pending,.puppet-warning{padding:8px 12px;border:1px solid #9b7b35;background:#fff4d5;color:#5f4818;border-radius:4px}
+.puppet-warning[hidden],.puppet-slot[hidden]{display:none}
+.puppet-target{display:grid;gap:6px}
+.puppet-target canvas{display:block;width:100%;max-width:280px;height:auto;border:1px solid #8d819d;border-radius:6px}
+.puppet-target-text{font-size:13px;line-height:1.35}
+.puppet-control{display:grid;grid-template-columns:84px minmax(110px,1fr) 44px;gap:8px;align-items:center;font-size:14px}
+.puppet-control input{width:100%}
+.puppet-control output{text-align:right;font-variant-numeric:tabular-nums}
+.puppet-toolbar button,.puppet-controls button,.puppet-slots button,.puppet-save-fields button{min-height:38px;padding:4px 12px;font-size:14px;border-radius:4px;cursor:pointer}
+.puppet-slot{display:flex;align-items:center;gap:6px}
+.puppet-settings label{display:flex;gap:7px;align-items:center;margin:4px 0;font-size:14px}
+.puppet-status{grid-column:1/-1;font-size:14px;min-height:20px}
+.puppet-save{grid-column:1/-1}
+.puppet-save-fields input{min-width:220px;flex:1;padding:6px 8px;border:1px solid #8d819d;border-radius:4px}
+.puppet-help p{max-width:75ch;margin:4px 0}
+.puppet-settings summary,.puppet-help summary,.puppet-save summary{cursor:pointer;min-height:32px;font-weight:600}
+.puppet-settings:not([open])>:not(summary),.puppet-help:not([open])>:not(summary),.puppet-save:not([open])>.puppet-save-fields{display:none}
+
+/* Tier 1: Phone / Compact Display (< 768px) */
+@media(max-width:767px){
+  .puppet-shell{grid-template-columns:1fr;padding:6px;gap:8px}
+  .puppet-stage{min-height:260px}
+  .puppet-toolbar button,.puppet-controls button,.puppet-slots button,.puppet-save-fields button{min-height:44px;flex:1 1 calc(50% - 6px)}
+  .puppet-control{grid-template-columns:72px minmax(100px,1fr) 38px}
+  .puppet-save-fields{flex-direction:column;align-items:stretch}
+  .puppet-save-fields input{width:100%;min-width:0}
+}
+
+/* Tier 2: Full 1080p Desktop Display (1024px - 2559px) */
+@media(min-width:1024px) and (max-width:2559px){
+  .puppet-shell{max-width:1600px;margin:0 auto;padding:16px;gap:16px;grid-template-columns:minmax(380px,1.2fr) minmax(300px,.8fr)}
+  .puppet-heading{font-size:24px}
+}
+
+/* Tier 3: Complete 4K UHD Display (>= 2560px) */
+@media(min-width:2560px){
+  .puppet-shell{max-width:2400px;margin:0 auto;padding:24px;gap:24px;grid-template-columns:minmax(600px,1.2fr) minmax(440px,.8fr)}
+  .puppet-heading{font-size:32px}
+  .puppet-subtitle{font-size:18px}
+  .puppet-stage{min-height:600px}
+  .puppet-toolbar button,.puppet-controls button,.puppet-slots button,.puppet-save-fields button{min-height:52px;font-size:18px;padding:8px 18px}
+  .puppet-control{font-size:18px;grid-template-columns:120px 1fr 60px;gap:12px}
+  .puppet-target-text{font-size:18px}
+  .puppet-target canvas{max-width:400px}
+  .puppet-settings summary,.puppet-help summary,.puppet-save summary{font-size:20px;min-height:42px}
+  .puppet-settings label{font-size:18px}
+  .puppet-save-fields input{font-size:18px;padding:10px 14px}
+  .puppet-status{font-size:18px}
+}
